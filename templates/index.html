@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>JSON Query Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>JSON Query Assistant</h1>
+      
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="section">
+        <h2>Upload JSON File</h2>
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+          <input type="file" name="json_file" accept=".json" required>
+          <br><br>
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+
+      <div class="section">
+        <h2>Ask a Question</h2>
+        <form action="{{ url_for('query') }}" method="post">
+          <textarea name="query" placeholder="Enter your question here..." required></textarea>
+          <br><br>
+          <label for="api_choice">Choose API:</label>
+          <select name="api_choice" required>
+            <option value="openai">OpenAI</option>
+            <option value="claude">Claude</option>
+          </select>
+          <br><br>
+          <button type="submit">Submit Query</button>
+        </form>
+      </div>
+
+      {% if query %}
+        <div class="section">
+          <h2>Answer:</h2>
+          <p>{{ query }}</p>
+        </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
